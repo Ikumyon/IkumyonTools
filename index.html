@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Ikumyon Tools - ツール配布ページ">
+  <meta name="description" data-i18n-content="home.meta" content="Ikumyon Tools - ツール配布ページ">
   <title>Ikumyon Tools</title>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XQY0X6M6PG"></script>
@@ -21,20 +21,26 @@
 <body>
   <header class="site-header">
     <div class="shell header-inner">
-      <a class="brand" href="./">Ikumyon Tools</a>
-      <a class="header-link" href="https://github.com/Ikumyon" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a class="brand" href="./" data-local-link>Ikumyon Tools</a>
+      <div class="header-actions">
+        <label class="language-switch">
+          <span class="sr-only" data-i18n="language.label">表示言語</span>
+          <select id="language-select" data-i18n-aria="language.label" aria-label="表示言語"></select>
+        </label>
+        <a class="header-link" href="https://github.com/Ikumyon" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+      </div>
     </div>
   </header>
 
   <main class="shell page-main">
     <section class="hero">
       <p class="eyebrow">TOOLS</p>
-      <h1>配布ツール</h1>
-      <p>各ツールの最新版をGitHubから配布しています。</p>
+      <h1 data-i18n="home.heading">配布ツール</h1>
+      <p data-i18n="home.description">各ツールの最新版をGitHubから配布しています。</p>
     </section>
 
-    <div id="status" class="status" aria-live="polite">ツールを読み込んでいます…</div>
-    <section id="tool-grid" class="tool-grid" aria-label="ツール一覧"></section>
+    <div id="status" class="status" aria-live="polite" data-i18n="common.loading">ツールを読み込んでいます…</div>
+    <section id="tool-grid" class="tool-grid" aria-label="ツール一覧" data-i18n-aria="home.list"></section>
   </main>
 
   <footer class="site-footer">

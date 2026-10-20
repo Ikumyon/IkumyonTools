@@ -10,6 +10,8 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
+    "allowJs": true,
+    "types": ["vite/client"],
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,

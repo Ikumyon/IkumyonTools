@@ -25,18 +25,11 @@ export function parseRateLimit(headers: Headers): GitHubRateLimitInfo | undefine
   const now = Date.now();
   const diffMs = Math.max(0, resetTimestamp - now);
   const minutesUntilReset = Math.ceil(diffMs / (60 * 1000));
-  const resetDate = new Date(resetTimestamp);
-  const resetTimeString = resetDate.toLocaleTimeString("ja-JP", {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
 
   return {
     limit: limitStr ? parseInt(limitStr, 10) : 60,
     remaining: remainingStr ? parseInt(remainingStr, 10) : 0,
     resetTimestamp,
-    resetTimeString,
     minutesUntilReset,
   };
 }
@@ -101,7 +94,7 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
       error: {
         type: "rate_limit",
         status: 403,
-        message: `GitHub APIのレート制限中です（${activeRateLimit.resetTimeString} にリセット予定 / 残り約${activeRateLimit.minutesUntilReset}分）。`,
+        message: "GitHub API rate limit reached.",
         rateLimit: activeRateLimit,
       },
     };
@@ -127,7 +120,6 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
         limit: 60,
         remaining: 0,
         resetTimestamp: Date.now() + 60 * 60 * 1000,
-        resetTimeString: "1時間後",
         minutesUntilReset: 60,
       };
       storeRateLimit(info);
@@ -137,7 +129,7 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
         error: {
           type: "rate_limit",
           status: 403,
-          message: `GitHub APIレート制限（60回/時）に達しました。${info.resetTimeString} に解除されます。`,
+          message: "GitHub API rate limit reached.",
           rateLimit: info,
         },
       };
@@ -149,7 +141,7 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
         error: {
           type: "not_found",
           status: 404,
-          message: "最新リリース情報が登録されていません。",
+          message: "No latest release found.",
           rateLimit,
         },
       };
@@ -161,7 +153,7 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
         error: {
           type: "http_error",
           status: response.status,
-          message: `GitHub APIエラー (${response.status}: ${response.statusText})`,
+          message: `GitHub API error (${response.status}: ${response.statusText})`,
           rateLimit,
         },
       };
@@ -186,7 +178,7 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
       release: null,
       error: {
         type: "network_error",
-        message: "ネットワークエラーにより最新情報を取得できませんでした。",
+        message: "Unable to retrieve the latest release due to a network error.",
       },
     };
   }

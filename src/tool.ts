@@ -1,3 +1,6 @@
+import { t, formatDate, formatTime, setupLanguage } from "./i18n";
+import { localizeTool, loadToolDetail } from "./i18n/tools";
+import { renderToolLanguages } from "./components/tool-languages";
 import { DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
 import { fetchLatestRelease } from "./api/github";
 import { formatBytes } from "./utils/format";
@@ -5,6 +8,7 @@ import { getUserEnvironment, checkToolCompatibility } from "./utils/platform";
 import { renderMarkdown, setupRenderedMarkdownEffects } from "./utils/markdown";
 import type {
   ToolManifest,
+  ToolText,
   FetchReleaseResult,
   DownloadOption,
   PlatformKey,
@@ -17,7 +21,7 @@ function getToolIdFromUrl(): string | null {
 }
 
 function buildDownloadOptions(
-  manifest: ToolManifest,
+  manifest: ToolManifest & ToolText,
   releaseResult: FetchReleaseResult,
   compat: ToolCompatibilityResult
 ): DownloadOption[] {
@@ -43,7 +47,7 @@ function buildDownloadOptions(
       const branch = value.replace("branch:", "");
       url = `https://github.com/${manifest.github}/archive/refs/heads/${branch}.zip`;
       filename = `${branch}.zip`;
-      statusReason = "ブランチ最新ZIP";
+      statusReason = t("release.branch");
     } else {
       // 通常のGitHub Releasesアセット
       filename = value;
@@ -55,16 +59,16 @@ function buildDownloadOptions(
           url = asset.browser_download_url;
           sizeText = formatBytes(asset.size);
         } else {
-          statusReason = "容量情報なし (アセット未検出)";
+          statusReason = t("release.noAsset");
         }
       } else if (error) {
         if (error.type === "rate_limit") {
-          const resetTime = error.rateLimit?.resetTimeString || "しばらく後";
-          statusReason = `容量取得不可 (API制限中 / 解除: ${resetTime})`;
+          const resetTime = formatTime(error.rateLimit?.resetTimestamp || Date.now());
+          statusReason = t("release.limitedSize", { time: resetTime });
         } else if (error.type === "not_found") {
-          statusReason = "容量情報なし (最新リリース未登録)";
+          statusReason = t("release.noRelease");
         } else {
-          statusReason = "容量取得エラー";
+          statusReason = t("release.sizeError");
         }
       }
     }
@@ -94,7 +98,7 @@ function buildDownloadOptions(
 }
 
 function renderSidebar(
-  manifest: ToolManifest,
+  manifest: ToolManifest & ToolText,
   basePath: string,
   downloadOptions: DownloadOption[],
   releaseResult: FetchReleaseResult,
@@ -106,20 +110,17 @@ function renderSidebar(
   const { release, error } = releaseResult;
   const iconSrc = manifest.icon ? `${basePath}/${manifest.icon}` : DEFAULT_PLACEHOLDER_ICON;
   
-  let versionText = release?.tag_name || "最新版";
-  if (!release && error?.type === "rate_limit") {
-    versionText = "最新版 (API制限中)";
-  }
+  const versionText = release?.tag_name || t("release.latest");
   
   const releaseDateText = release?.published_at
-    ? new Date(release.published_at).toLocaleDateString("ja-JP")
+    ? formatDate(release.published_at)
     : null;
 
   const hasMultiplePlatforms = downloadOptions.length > 1;
 
   const tabsHtml = hasMultiplePlatforms
     ? `
-      <div class="platform-tabs" role="tablist" aria-label="プラットフォームの選択">
+      <div class="platform-tabs" role="tablist" aria-label="${t("detail.selectPlatform")}">
         ${downloadOptions
           .map(
             (opt, idx) => `
@@ -158,7 +159,7 @@ function renderSidebar(
                 <a class="button primary download-action-btn"
                    style="width: 100%; justify-content: center; min-height: 46px; font-size: 0.95rem;"
                    href="${opt.url}" download="${escapeHtml(opt.filename)}">
-                  <i class="fa-solid fa-download"></i> ダウンロード
+                  <i class="fa-solid fa-download"></i> ${t("common.download")}
                   <div class="download-tooltip">
                     ${tooltipContent}
                   </div>
@@ -167,7 +168,7 @@ function renderSidebar(
             `;
           })
           .join("")
-      : `<p class="muted">ダウンロード可能なファイルはありません。</p>`;
+      : `<p class="muted">${t("detail.noDownloads")}</p>`;
 
   // 非対応環境時のみ表示するツールチップ付きバッジ（場所は見出し直下）
   const envBadgeHtml = !compat.isCompatible
@@ -177,7 +178,7 @@ function renderSidebar(
           <i class="fa-solid fa-triangle-exclamation"></i>
           ${escapeHtml(compat.badgeLabel)}
           <span class="custom-tooltip">
-            ${escapeHtml(compat.tooltipMessage || "お使いの環境向けファイルは現在提供されていません。")}
+            ${escapeHtml(compat.tooltipMessage || t("environment.noDownloads"))}
           </span>
         </span>
       </div>
@@ -188,13 +189,13 @@ function renderSidebar(
   const versionHtml = error?.type === "rate_limit" && error.rateLimit
     ? `
       <div class="meta-row">
-        <span class="meta-label">バージョン</span>
-        <span class="meta-value version-value-with-tooltip has-custom-tooltip" tabindex="0" role="note" aria-label="APIレート制限中">
-          最新版 <i class="fa-solid fa-triangle-exclamation"></i>
+        <span class="meta-label">${t("detail.version")}</span>
+        <span class="meta-value version-value-with-tooltip has-custom-tooltip" tabindex="0" role="note" aria-label="${t("release.rateLimit")}">
+          ${t("release.latest")} <i class="fa-solid fa-triangle-exclamation"></i>
           <span class="custom-tooltip">
-            <strong>GitHub API レート制限中</strong><br>
-            未認証アクセスの制限（60回/時）に達したため、最新容量やバージョンを取得できません。<br>
-            解除予定: <strong>${escapeHtml(error.rateLimit.resetTimeString)}</strong>（残り約${error.rateLimit.minutesUntilReset}分）
+            <strong>${t("release.rateLimit")}</strong><br>
+            ${t("release.rateLimitDescription")}<br>
+            ${escapeHtml(t("release.reset", { time: formatTime(error.rateLimit.resetTimestamp), minutes: error.rateLimit.minutesUntilReset }))}
           </span>
         </span>
       </div>
@@ -202,7 +203,7 @@ function renderSidebar(
     : versionText
       ? `
       <div class="meta-row">
-        <span class="meta-label">バージョン</span>
+        <span class="meta-label">${t("detail.version")}</span>
         <span class="meta-value">${escapeHtml(versionText)}</span>
       </div>
     `
@@ -218,19 +219,20 @@ function renderSidebar(
       </div>
 
       <div class="sidebar-download-part">
-        <h2>入手・ダウンロード</h2>
+        <h2>${t("detail.downloads")}</h2>
         ${envBadgeHtml}
         ${tabsHtml}
         ${downloadPanelsHtml}
       </div>
 
       <div class="sidebar-meta-part">
+        ${renderToolLanguages(manifest.supportedLanguages)}
         ${versionHtml}
         ${
           releaseDateText
             ? `
           <div class="meta-row">
-            <span class="meta-label">最終更新</span>
+            <span class="meta-label">${t("detail.updated")}</span>
             <span class="meta-value">${escapeHtml(releaseDateText)}</span>
           </div>
         `
@@ -238,7 +240,7 @@ function renderSidebar(
         }
         <div class="meta-row meta-row-link">
           <a class="sidebar-github-link" href="https://github.com/${manifest.github}" target="_blank" rel="noreferrer">
-            <i class="fa-brands fa-github"></i> GitHub でソースコードを見る
+            <i class="fa-brands fa-github"></i> ${t("detail.source")}
           </a>
         </div>
       </div>
@@ -287,7 +289,7 @@ function renderGallery(images: string[], basePath: string): HTMLElement {
               .map(
                 (src) => `
               <div class="gallery-main-slide">
-                <img class="gallery-main-img" src="${src}" alt="スクリーンショット" loading="lazy">
+                <img class="gallery-main-img" src="${src}" alt="${t("gallery.screenshot")}" loading="lazy">
               </div>
             `
               )
@@ -297,10 +299,10 @@ function renderGallery(images: string[], basePath: string): HTMLElement {
         ${
           resolvedImages.length > 1
             ? `
-          <button class="gallery-nav prev" type="button" aria-label="前の画像">
+          <button class="gallery-nav prev" type="button" aria-label="${t("gallery.previous")}">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
-          <button class="gallery-nav next" type="button" aria-label="次の画像">
+          <button class="gallery-nav next" type="button" aria-label="${t("gallery.next")}">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
         `
@@ -315,7 +317,7 @@ function renderGallery(images: string[], basePath: string): HTMLElement {
           ${resolvedImages
             .map(
               (src, idx) => `
-            <button class="gallery-thumb ${idx === 0 ? "active" : ""}" type="button" data-index="${idx}" aria-label="画像 ${idx + 1} を表示">
+            <button class="gallery-thumb ${idx === 0 ? "active" : ""}" type="button" data-index="${idx}" aria-label="${t("gallery.show", { number: idx + 1 })}">
               <img src="${src}" alt="" loading="lazy">
             </button>
           `
@@ -420,6 +422,7 @@ function escapeHtml(str: string): string {
 }
 
 async function initDetail(): Promise<void> {
+  setupLanguage();
   const statusEl = document.getElementById("detail-status");
   const detailArticle = document.getElementById("tool-detail");
 
@@ -429,30 +432,28 @@ async function initDetail(): Promise<void> {
   if (!toolId) {
     if (statusEl) {
       statusEl.className = "status error";
-      statusEl.textContent = "ツールが指定されていません。ツール一覧から選択してください。";
+      statusEl.textContent = t("detail.missing");
     }
     return;
   }
 
-  const basePath = `tools/${toolId}`;
+  const basePath = `tools/${encodeURIComponent(toolId)}`;
 
   try {
     const manifestRes = await fetch(`${basePath}/tool.json`);
     if (!manifestRes.ok) {
       throw new Error(`ツール情報 (tool.json) の取得に失敗しました: ${toolId}`);
     }
-    const manifest: ToolManifest = await manifestRes.json();
+    const manifest = localizeTool(await manifestRes.json(), toolId);
 
     document.title = `${manifest.name} | Ikumyon Tools`;
 
     // Release情報とMarkdownを並行取得
-    const [releaseResult, mdText] = await Promise.all([
+    const [releaseResult, detail] = await Promise.all([
       fetchLatestRelease(manifest.github),
       manifest.detail
-        ? fetch(`${basePath}/${manifest.detail}`)
-            .then((r) => (r.ok ? r.text() : ""))
-            .catch(() => "")
-        : Promise.resolve(""),
+        ? loadToolDetail(basePath, manifest.detail)
+        : Promise.resolve(null),
     ]);
 
     const env = getUserEnvironment();
@@ -476,11 +477,19 @@ async function initDetail(): Promise<void> {
     const contentEl = document.createElement("div");
     contentEl.className = "detail-content";
 
-    if (mdText) {
-      contentEl.innerHTML = await renderMarkdown(mdText, basePath);
+    if (detail) {
+      contentEl.lang = detail.language;
+      if (detail.fallback) {
+        const notice = document.createElement("p");
+        notice.className = "translation-notice";
+        notice.setAttribute("role", "status");
+        notice.textContent = t("detail.fallback");
+        mainCol.appendChild(notice);
+      }
+      contentEl.innerHTML = await renderMarkdown(detail.markdown, basePath);
       await setupRenderedMarkdownEffects(contentEl);
     } else {
-      contentEl.innerHTML = `<p class="detail-empty">詳細説明は準備中です。</p>`;
+      contentEl.innerHTML = `<p class="detail-empty">${t("detail.empty")}</p>`;
     }
 
     mainCol.appendChild(contentEl);
@@ -502,7 +511,7 @@ async function initDetail(): Promise<void> {
     console.error("詳細画面の読み込みに失敗しました:", err);
     if (statusEl) {
       statusEl.className = "status error";
-      statusEl.textContent = "ツールの詳細情報の読み込み中にエラーが発生しました。";
+      statusEl.textContent = t("detail.error");
     }
   }
 }

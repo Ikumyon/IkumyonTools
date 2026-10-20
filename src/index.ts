@@ -1,3 +1,6 @@
+import { t, localizedUrl, setupLanguage } from "./i18n";
+import { localizeTool } from "./i18n/tools";
+import { renderToolLanguages } from "./components/tool-languages";
 import { TOOL_IDS, DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
 import { fetchLatestRelease } from "./api/github";
 import { getUserEnvironment, resolveMatchingPlatform } from "./utils/platform";
@@ -12,7 +15,7 @@ async function loadTools(): Promise<ToolItem[]> {
         if (!response.ok) {
           throw new Error(`Failed to load ${id}`);
         }
-        const manifest: ToolManifest = await response.json();
+        const manifest = localizeTool(await response.json(), id);
         return { id, manifest, basePath };
       } catch (err) {
         console.warn(`ツール情報ロード失敗: ${id}`, err);
@@ -57,7 +60,7 @@ function createToolCard(tool: ToolItem, env: UserEnvironment): HTMLElement {
   card.className = "tool-card";
 
   const iconSrc = manifest.icon ? `${basePath}/${manifest.icon}` : DEFAULT_PLACEHOLDER_ICON;
-  const detailUrl = `tool.html?tool=${encodeURIComponent(id)}`;
+  const detailUrl = localizedUrl(`tool.html?tool=${encodeURIComponent(id)}`);
   const initialDownload = resolveInitialDownload(manifest, env);
 
   // 対応プラットフォームのアイコン生成
@@ -73,7 +76,7 @@ function createToolCard(tool: ToolItem, env: UserEnvironment): HTMLElement {
   // 非対応の場合はダウンロードボタンを出さない
   const downloadBtnHtml = initialDownload
     ? `<a class="button primary" data-download-btn="${id}" data-platform="${initialDownload.platform}" href="${initialDownload.url}" download="${escapeHtml(initialDownload.filename)}">
-         <i class="fa-solid fa-download"></i> ダウンロード
+         <i class="fa-solid fa-download"></i> ${t("common.download")}
        </a>`
     : "";
 
@@ -85,16 +88,17 @@ function createToolCard(tool: ToolItem, env: UserEnvironment): HTMLElement {
       <a class="tool-card-summary-link" href="${detailUrl}">
         <div class="tool-card-top">
           <h2 class="tool-card-title">${escapeHtml(manifest.name)}</h2>
-          <div class="tool-card-platforms" aria-label="対応プラットフォーム">
+          <div class="tool-card-platforms" aria-label="${t("common.platforms")}">
             ${platformsHtml}
           </div>
         </div>
         <p class="tool-card-description">${escapeHtml(manifest.description)}</p>
       </a>
+      ${renderToolLanguages(manifest.supportedLanguages)}
       <div class="tool-card-actions">
         ${downloadBtnHtml}
         <a class="button secondary" href="${detailUrl}">
-          <i class="fa-solid fa-arrow-right"></i> 詳細を見る
+          <i class="fa-solid fa-arrow-right"></i> ${t("common.details")}
         </a>
       </div>
     </div>
@@ -138,6 +142,7 @@ async function updateReleasesAndDownloads(tools: ToolItem[]): Promise<void> {
 }
 
 async function init(): Promise<void> {
+  setupLanguage();
   const statusEl = document.getElementById("status");
   const gridEl = document.getElementById("tool-grid");
 
@@ -149,7 +154,7 @@ async function init(): Promise<void> {
     if (tools.length === 0) {
       if (statusEl) {
         statusEl.className = "status error";
-        statusEl.textContent = "配布可能なツールが見つかりませんでした。";
+        statusEl.textContent = t("home.empty");
       }
       return;
     }
@@ -170,7 +175,7 @@ async function init(): Promise<void> {
     console.error("ツール一覧の初期化に失敗しました:", error);
     if (statusEl) {
       statusEl.className = "status error";
-      statusEl.textContent = "ツールの読み込み中にエラーが発生しました。時間を置いて再度お試しください。";
+      statusEl.textContent = t("home.error");
     }
   }
 }

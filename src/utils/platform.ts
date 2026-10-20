@@ -1,3 +1,4 @@
+import { t } from "../i18n";
 import type { PlatformKey, ToolDownloads, UserOS, UserBrowser, UserEnvironment } from "../types";
 
 interface NavigatorUAData {
@@ -61,14 +62,14 @@ const OS_LABEL_MAP: Record<UserOS, string> = {
   windows: "Windows",
   linux: "Linux",
   mac: "macOS",
-  other: "その他OS",
+  other: t("environment.otherOS"),
 };
 
 const BROWSER_LABEL_MAP: Record<UserBrowser, string> = {
   firefox: "Firefox",
   chrome: "Chrome",
   safari: "Safari",
-  other: "ブラウザ",
+  other: t("environment.otherBrowser"),
 };
 
 /**
@@ -143,7 +144,6 @@ export interface ToolCompatibilityResult {
   badgeLabel: string;
   badgeType: "success" | "warning";
   tooltipMessage?: string;
-  noticeHtml?: string;
 }
 
 /**
@@ -156,10 +156,9 @@ export function checkToolCompatibility(
   if (!downloads || Object.keys(downloads).length === 0) {
     return {
       isCompatible: false,
-      badgeLabel: `お使いの環境: ${env.summaryLabel}`,
+      badgeLabel: t("environment.current", { environment: env.summaryLabel }),
       badgeType: "warning",
-      tooltipMessage: "現在ダウンロード可能なファイルはありません。",
-      noticeHtml: "現在ダウンロード可能なファイルはありません。",
+      tooltipMessage: t("environment.noDownloads"),
     };
   }
 
@@ -168,7 +167,7 @@ export function checkToolCompatibility(
     return {
       isCompatible: true,
       recommendedPlatform: match.platform,
-      badgeLabel: `お使いの環境: ${env.summaryLabel}`,
+      badgeLabel: t("environment.current", { environment: env.summaryLabel }),
       badgeType: "success",
     };
   }
@@ -181,21 +180,20 @@ export function checkToolCompatibility(
   if (hasExtension && !hasDesktop) {
     // 拡張機能ツールで非対応
     if (env.browser === "firefox") {
-      rawMessage = `お使いのブラウザ（Firefox）向けのアドオンは現在提供されていません（Chrome版のみ提供中）。`;
+      rawMessage = t("environment.browser", { browser: "Firefox" });
     } else {
-      rawMessage = `お使いのブラウザ（${env.browserLabel}）には対応していません。`;
+      rawMessage = t("environment.browser", { browser: env.browserLabel });
     }
   } else {
     // デスクトップツールで非対応
-    rawMessage = `お使いのOS（${env.osLabel}）向けのファイルは現在提供されていません。`;
+    rawMessage = t("environment.os", { os: env.osLabel });
   }
 
   return {
     isCompatible: false,
     recommendedPlatform: Object.keys(downloads)[0] as PlatformKey,
-    badgeLabel: `${env.summaryLabel}（非対応）`,
+    badgeLabel: t("environment.unsupported", { environment: env.summaryLabel }),
     badgeType: "warning",
-    tooltipMessage: `${rawMessage} 他のOS・ブラウザ用のファイルは下部より通常通りダウンロード可能です。`,
-    noticeHtml: `<div class="env-notice warning"><i class="fa-solid fa-triangle-exclamation"></i> <div>${rawMessage}<br><span class="muted">※他のOS・ブラウザ用のファイルは下部タブより通常通りダウンロード可能です。</span></div></div>`,
+    tooltipMessage: t("environment.alternatives", { reason: rawMessage }),
   };
 }

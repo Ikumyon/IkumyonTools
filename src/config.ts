@@ -1,6 +1,8 @@
+import { t } from "./i18n";
 import type { PlatformKey } from "./types";
 
 export const TOOL_IDS: readonly string[] = [
+  "autolingua2",
   "kancolle-notify",
   "kancolle-stream-overlay",
   "kco-relay",
@@ -19,7 +21,7 @@ export const PLATFORM_CONFIG: Record<PlatformKey, PlatformMeta> = {
   windows: { label: "Windows", iconClass: "fa-brands fa-windows" },
   linux: { label: "Linux", iconClass: "fa-brands fa-linux" },
   mac: { label: "macOS", iconClass: "fa-brands fa-apple" },
-  chrome: { label: "Chrome / 拡張機能", iconClass: "fa-brands fa-chrome" },
-  firefox: { label: "Firefox / アドオン", iconClass: "fa-brands fa-firefox-browser" },
+  chrome: { get label() { return t("platform.chrome"); }, iconClass: "fa-brands fa-chrome" },
+  firefox: { get label() { return t("platform.firefox"); }, iconClass: "fa-brands fa-firefox-browser" },
 };
 

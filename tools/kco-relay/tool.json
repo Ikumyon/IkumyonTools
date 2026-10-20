@@ -1,7 +1,6 @@
 {
-  "name": "KCO Relay",
-  "description": "KCO title fetcher などから受け取ったBGMタイトル情報をローカルで中継し、配信オーバーレイへ届ける常駐ツール。",
   "github": "Ikumyon/KCO-relay",
+  "supportedLanguages": ["ja"],
   "icon": "icon.webp",
   "detail": "detail.md",
   "images": [

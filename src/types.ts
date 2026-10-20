@@ -8,18 +8,23 @@ export interface ToolDownloads {
 }
 
 export interface ToolManifest {
-  name: string;
-  description: string;
   github: string;
+  /** UI languages of the tool itself. Empty or omitted means unconfirmed. */
+  supportedLanguages?: string[];
   icon?: string;
   images?: string[];
   detail?: string;
   downloads?: ToolDownloads;
 }
 
+export interface ToolText {
+  name: string;
+  description: string;
+}
+
 export interface ToolItem {
   id: string;
-  manifest: ToolManifest;
+  manifest: ToolManifest & ToolText;
   basePath: string;
 }
 
@@ -55,7 +60,6 @@ export interface GitHubRateLimitInfo {
   limit: number;
   remaining: number;
   resetTimestamp: number;
-  resetTimeString: string;
   minutesUntilReset: number;
 }
 

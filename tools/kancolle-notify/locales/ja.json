@@ -1,0 +1,4 @@
+{
+  "name": "kancolle-notify",
+  "description": "艦これの遠征・入渠・泊地修理・疲労回復を受動監視し、Cloudflare Workers とデスクトップ常駐通知で知らせる通知システム。"
+}

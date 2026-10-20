@@ -1,13 +1,16 @@
+<!-- i18n:overview -->
 ## ツールの概要
 
 **KCO Relay** は、KCO title fetcher などの補助ツールから送られてくる再生中タイトル情報を、ローカル環境で受け取り、中継するためのデスクトップ常駐ツールです。
 Kancolle Stream Overlay と組み合わせることで、配信画面にBGM名などをリアルタイム表示できます。
 
+<!-- i18n:features -->
 ## 主な機能
 
 ブラウザ拡張などから送られたタイトル情報をローカルで受信し、Kancolle Stream Overlay 側のBGM表示へ橋渡しします。
 Windows / Linux のデスクトップ上で動作する軽量な常駐アプリで、ビルド済みファイルは GitHub Releases から入手できます。
 
+<!-- i18n:downloads -->
 ## ダウンロード
 
 最新版は GitHub Releases のAssetとして配布されています。
@@ -17,6 +20,7 @@ Windows / Linux のデスクトップ上で動作する軽量な常駐アプリ�
 
 Linux版はUbuntu 22.04のx86_64環境でビルドされています。GUI環境、D-Bus、Fontconfig、XKBなどの共有ライブラリが必要です。
 
+<!-- i18n:related -->
 ## 関連ツール
 
 - **KCO title fetcher**: YouTube / ニコニコ動画の再生タイトルを取得して送信します。

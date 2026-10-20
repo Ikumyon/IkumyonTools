@@ -1,4 +1,5 @@
-import { marked } from "marked";
+import { t, localizedUrl } from "../i18n";
+import { marked, Marked } from "marked";
 import mermaid from "mermaid";
 
 mermaid.initialize({
@@ -43,15 +44,15 @@ export async function renderMarkdown(
 
     return `
       <div class="code-block-container">
-        <button class="code-copy-btn" type="button" aria-label="コードをコピー">
-          <i class="fa-regular fa-copy"></i> <span>コピー</span>
+        <button class="code-copy-btn" type="button" aria-label="${t("code.copyLabel")}">
+          <i class="fa-regular fa-copy"></i> <span>${t("code.copy")}</span>
         </button>
         <pre><code${langClass}>${escaped}</code></pre>
       </div>
     `;
   };
 
-  marked.use({
+  const parser = new Marked({
     renderer: customRenderer,
     hooks: {
       postprocess(html) {
@@ -62,7 +63,7 @@ export async function renderMarkdown(
     },
   });
 
-  const html = await marked.parse(mdText, { async: true });
+  const html = await parser.parse(mdText, { async: true });
   return html;
 }
 
@@ -70,6 +71,8 @@ export async function renderMarkdown(
  * レンダリング後のDOM内のMermaidダイアグラムとコピーボタンを初期化します。
  */
 export async function setupRenderedMarkdownEffects(container: HTMLElement): Promise<void> {
+  // Relative links in tool documents (including Mermaid click targets) use the tool directory.
+  localizeDocumentLinks(container);
   // 1. コピーボタンの挙動設定
   const copyButtons = container.querySelectorAll<HTMLButtonElement>(".code-copy-btn");
   for (const btn of copyButtons) {
@@ -81,13 +84,15 @@ export async function setupRenderedMarkdownEffects(container: HTMLElement): Prom
         await navigator.clipboard.writeText(textToCopy);
         const originalHtml = btn.innerHTML;
         btn.classList.add("copied");
-        btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>コピー完了</span>`;
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> <span>${t("code.copied")}</span>`;
         setTimeout(() => {
           btn.classList.remove("copied");
           btn.innerHTML = originalHtml;
         }, 2000);
       } catch (err) {
         console.error("クリップボードへのコピーに失敗しました:", err);
+        const label = btn.querySelector("span");
+        if (label) label.textContent = t("code.failed");
       }
     });
   }
@@ -102,9 +107,25 @@ export async function setupRenderedMarkdownEffects(container: HTMLElement): Prom
     try {
       const { svg } = await mermaid.render(diagramId, code);
       node.innerHTML = svg;
+      localizeDocumentLinks(node);
     } catch (e) {
       console.warn("Mermaidレンダリング警告:", e);
       node.innerHTML = `<pre class="mermaid-fallback"><code>${code}</code></pre>`;
     }
   }
+}
+
+function localizeDocumentLinks(container: HTMLElement): void {
+  const toolId = new URLSearchParams(location.search).get("tool");
+  const base = new URL(`tools/${encodeURIComponent(toolId || "")}/`, location.href);
+  container.querySelectorAll<HTMLAnchorElement | SVGAElement>("a").forEach((link) => {
+    const raw = link.getAttribute("href") || link.getAttribute("xlink:href");
+    if (!raw || raw.startsWith("#")) return;
+    const url = new URL(raw, base);
+    if (url.origin !== location.origin) return;
+    const href = url.pathname.endsWith("/tool.html") || url.pathname.endsWith("/index.html")
+      ? localizedUrl(url.href) : url.href;
+    link.setAttribute("href", href);
+    if (link.hasAttribute("xlink:href")) link.setAttribute("xlink:href", href);
+  });
 }
