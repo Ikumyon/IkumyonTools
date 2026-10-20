@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ikumyon Tools - ツール配布ページ">
+  <title>Ikumyon Tools</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XQY0X6M6PG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-XQY0X6M6PG');
+  </script>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./">Ikumyon Tools</a>
+      <a class="header-link" href="https://github.com/Ikumyon" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+    </div>
+  </header>
+
+  <main class="shell page-main">
+    <section class="hero">
+      <p class="eyebrow">TOOLS</p>
+      <h1>配布ツール</h1>
+      <p>各ツールの最新版をGitHubから配布しています。</p>
+    </section>
+
+    <div id="status" class="status" aria-live="polite">ツールを読み込んでいます…</div>
+    <section id="tool-grid" class="tool-grid" aria-label="ツール一覧"></section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">© Ikumyon</div>
+  </footer>
+
+  <script type="module" src="./src/index.ts"></script>
+</body>
+</html>
