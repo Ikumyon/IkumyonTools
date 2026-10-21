@@ -1,14 +1,18 @@
 import { t, localizedUrl, setupLanguage } from "./i18n";
 import { localizeTool } from "./i18n/tools";
 import { renderToolLanguages } from "./components/tool-languages";
-import { TOOL_IDS, DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
+import { DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
+import { pageView } from './analytics';
 import { fetchLatestRelease } from "./api/github";
 import { getUserEnvironment, resolveMatchingPlatform } from "./utils/platform";
 import type { ToolManifest, ToolItem, PlatformKey, UserEnvironment } from "./types";
 
 async function loadTools(): Promise<ToolItem[]> {
+  const response = await fetch('tools-catalog.json');
+  if (!response.ok) throw new Error('Unable to load tool catalog');
+  const catalog = await response.json() as { tools: { id: string }[] };
   const results = await Promise.all(
-    TOOL_IDS.map(async (id) => {
+    catalog.tools.map(async ({ id }) => {
       try {
         const basePath = `tools/${id}`;
         const response = await fetch(`${basePath}/tool.json`);
@@ -75,7 +79,7 @@ function createToolCard(tool: ToolItem, env: UserEnvironment): HTMLElement {
 
   // 非対応の場合はダウンロードボタンを出さない
   const downloadBtnHtml = initialDownload
-    ? `<a class="button primary" data-download-btn="${id}" data-platform="${initialDownload.platform}" href="${initialDownload.url}" download="${escapeHtml(initialDownload.filename)}">
+    ? `<a class="button primary" data-download-btn="${id}" data-analytics-tool="${id}" data-platform="${initialDownload.platform}" href="${initialDownload.url}" download="${escapeHtml(initialDownload.filename)}">
          <i class="fa-solid fa-download"></i> ${t("common.download")}
        </a>`
     : "";
@@ -135,6 +139,7 @@ async function updateReleasesAndDownloads(tools: ToolItem[]): Promise<void> {
         if (asset) {
           btn.href = asset.browser_download_url;
           btn.setAttribute("download", asset.name);
+          btn.dataset.version = release.tag_name;
         }
       }
     })
@@ -142,6 +147,7 @@ async function updateReleasesAndDownloads(tools: ToolItem[]): Promise<void> {
 }
 
 async function init(): Promise<void> {
+  pageView({ page: 'home' });
   setupLanguage();
   const statusEl = document.getElementById("status");
   const gridEl = document.getElementById("tool-grid");

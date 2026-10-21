@@ -1,15 +1,6 @@
 import { t } from "./i18n";
 import type { PlatformKey } from "./types";
 
-export const TOOL_IDS: readonly string[] = [
-  "autolingua2",
-  "kancolle-notify",
-  "kancolle-stream-overlay",
-  "kco-relay",
-  "kco-senka-reader",
-  "kco-title-fetcher",
-] as const;
-
 export const DEFAULT_PLACEHOLDER_ICON = "assets/tool-placeholder.svg";
 
 export interface PlatformMeta {

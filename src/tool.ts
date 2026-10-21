@@ -1,5 +1,6 @@
 import { t, formatDate, formatTime, setupLanguage } from "./i18n";
 import { localizeTool, loadToolDetail } from "./i18n/tools";
+import { pageView } from './analytics';
 import { renderToolLanguages } from "./components/tool-languages";
 import { DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
 import { fetchLatestRelease } from "./api/github";
@@ -440,11 +441,16 @@ async function initDetail(): Promise<void> {
   const basePath = `tools/${encodeURIComponent(toolId)}`;
 
   try {
+    const catalogResponse = await fetch('tools-catalog.json');
+    if (!catalogResponse.ok) throw new Error('Unable to load tool catalog');
+    const catalog = await catalogResponse.json() as { tools: { id: string }[] };
+    if (!catalog.tools.some(tool => tool.id === toolId)) throw new Error('Unknown tool');
     const manifestRes = await fetch(`${basePath}/tool.json`);
     if (!manifestRes.ok) {
       throw new Error(`ツール情報 (tool.json) の取得に失敗しました: ${toolId}`);
     }
     const manifest = localizeTool(await manifestRes.json(), toolId);
+    pageView({ page: 'tool', tool_id: toolId });
 
     document.title = `${manifest.name} | Ikumyon Tools`;
 
@@ -496,6 +502,14 @@ async function initDetail(): Promise<void> {
 
     // 右カラム（サイドバーカード）
     const sidebarCol = renderSidebar(manifest, basePath, downloadOptions, releaseResult, compat);
+    sidebarCol.querySelectorAll<HTMLAnchorElement>('a.download-action-btn').forEach(link => {
+      link.dataset.analyticsTool = toolId;
+      const panel = link.closest<HTMLElement>('[data-platform-panel]');
+      link.dataset.platform = panel?.dataset.platformPanel || '';
+      if (releaseResult.release && !manifest.downloads?.[link.dataset.platform]?.startsWith('branch:')) {
+        link.dataset.version = releaseResult.release.tag_name;
+      }
+    });
 
     layout.appendChild(mainCol);
     layout.appendChild(sidebarCol);
