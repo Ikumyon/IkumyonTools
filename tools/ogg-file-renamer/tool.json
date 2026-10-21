@@ -1,0 +1,7 @@
+{
+  "github": "Ikumyon/Paradox-Interactive_music_MOD_support",
+  "supportedLanguages": ["ja"],
+  "icon": "icon.ico",
+  "detail": "detail.md",
+  "downloads": { "windows": "OGG-File-Renamer.exe" }
+}

@@ -1,0 +1,4 @@
+{
+  "name": "OGG File Renamer",
+  "description": "Prepare music mods for Paradox games by copying OGG files with romanized filenames and generating localization files that preserve the original Japanese titles in game."
+}

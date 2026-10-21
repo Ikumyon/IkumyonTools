@@ -573,3 +573,16 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .sidebar-download-part .download-row { flex-direction: row; align-items: center; }
   .gallery-thumb { width: 84px; height: 52px; }
 }
+.analytics-exclusion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  padding: 12px 20px;
+  background: #e1f3ed;
+  color: #184b3e;
+  border-bottom: 1px solid #9cc9ba;
+  font-size: 13px;
+}
+.analytics-exclusion a { color: #184b3e; text-decoration: underline; padding: 8px 0; }
