@@ -1,0 +1,8 @@
+{
+  "name": "Paratranz Mod Checker",
+  "description": "Compare local source files for translation mods with Paratranz and sync updates. Manage multiple projects with game filters, automatic checks, and notifications.",
+  "tagLabels": {
+    "translation": "Translation",
+    "modding": "Modding"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "github": "Ikumyon/Paratranz-Mod-Checker",
+  "icon": "icon.png",
+  "images": ["pictures/sync-update.webp", "pictures/add-project.webp"],
+  "supportedLanguages": [
+    "ja-JP", "en-US", "en-GB", "ar", "bn-BD", "cs-CZ", "da-DK",
+    "de-DE", "el-GR", "es-ES", "fa-IR", "fi-FI", "fr-FR", "he-IL",
+    "hi-IN", "hu-HU", "id-ID", "it-IT", "ko-KR", "ms-MY", "nb-NO",
+    "nl-NL", "pl-PL", "pt-PT", "ro-RO", "ru-RU", "sv-SE", "th-TH",
+    "tr-TR", "uk-UA", "ur-PK", "vi-VN", "zh-CN", "zh-TW"
+  ],
+  "detail": "detail.md",
+  "downloads": {
+    "windows": "Paratranz-Mod-Checker-windows.zip",
+    "linux": "Paratranz-Mod-Checker-linux.tar.gz"
+  },
+  "tags": ["translation", "modding"]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "Paratranz Mod Checker",
+  "description": "翻訳MODのローカル原文とParatranzの差分を確認し、更新を同期するツール。複数プロジェクトの管理、ゲーム別の絞り込み、自動チェックと通知に対応します。",
+  "tagLabels": {
+    "translation": "翻訳",
+    "modding": "MOD制作"
+  }
+}
