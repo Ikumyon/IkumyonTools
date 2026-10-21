@@ -16,9 +16,9 @@
 - Restore settings such as output paths and filename length limits on the next launch.
 
 <!-- i18n:downloads -->
-## Download
+## Launch
 
-For Windows, download and launch `OGG-File-Renamer.exe` from [GitHub Releases](https://github.com/Ikumyon/Paradox-Interactive_music_MOD_support/releases/latest). The prebuilt executable does not require a separate Python installation.
+On Windows, launch `OGG-File-Renamer.exe` to use the app. A separate Python installation is not required.
 
 <!-- i18n:usage -->
 ## Getting started

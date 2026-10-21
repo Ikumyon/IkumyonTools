@@ -78,13 +78,6 @@ chmod +x install.sh
 
 3. 対話プロンプトに従い、Cloudflare API トークンと通知先を入力します。
 
-💡 **ブラウザでダウンロードせず直接導入する場合**:  
-以下のワンライナーをターミナルで実行するだけでもセットアップ可能です：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Ikumyon/kancolle-notify/main/installer/install.sh | bash
-```
-
 📁 **インストール先について**:  
 デフォルトでは、インストーラーを実行した場所に `kancolle-notify` フォルダが作成され、その中に `desktop`（常駐デーモン・ダッシュボード）と `extension`（ブラウザ拡張機能）が展開されます。
 

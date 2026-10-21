@@ -14,9 +14,9 @@
 - 前回のパスや設定を保存し、次回起動時に復元します。
 
 <!-- i18n:downloads -->
-## ダウンロード・動作環境
+## 動作環境・起動方法
 
-Windows 10 / 11向けに、[GitHub Releases](https://github.com/Ikumyon/Infill/releases/latest)で `Infill.exe` を配布しています。ダウンロードした実行ファイルを起動してください。配布版を使う場合、Pythonのインストールは不要です。
+Windows 10 / 11に対応しています。`Infill.exe` を起動して使用します。Pythonのインストールは不要です。
 
 <!-- i18n:usage -->
 ## 使い方

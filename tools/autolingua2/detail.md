@@ -17,17 +17,13 @@ Paradox YAMLやParaTranz JSONを扱えます。AI接続先やファイル形式�
 - **AIチャットと自動化**：チャットから翻訳作業を進めたり、スクリプト・トリガー・MCPで作業を連携したりできます。
 
 <!-- i18n:installation -->
-## ダウンロードと起動
+## 起動と初期設定
 
-このページのダウンロード欄から、利用するOS向けの配布ファイルを選びます。
-
-1. WindowsではZIP、Linuxではtar.gzをダウンロードし、フォルダ全体を展開します。
+1. WindowsではZIP、Linuxではtar.gzのフォルダ全体を展開します。
 2. Windowsでは展開先の `AUTOlingua2.exe`、Linuxでは `AUTOlingua2` を起動します。Linuxで実行権限がない場合は `chmod +x AUTOlingua2` を実行します。
 3. ランチャーと同梱の `core` フォルダは、配布時の配置のまま使います。実行ファイルだけを移動しないでください。
 4. 初期設定で表示言語とAI接続先・モデルを設定し、接続テストを行います。
 5. プロジェクトを作成し、原文と翻訳先言語を追加して翻訳を始めます。
-
-**配布準備中**：ダウンロード欄のファイル名は仮設定です。現在はWindows版を `AUTOlingua2-windows.zip`、Linux版を `AUTOlingua2-linux.tar.gz` としており、リリースに同名ファイルが登録されるまではダウンロードできません。
 
 <!-- i18n:ai -->
 ## AIの利用について
@@ -48,4 +44,4 @@ AIの利用条件や料金は接続先のサービスに従います。OpenAI、
 ## 更新とソースコード
 
 アプリには更新機能があります。更新時にはアプリの案内に従って進めます。
-ソースコードとリリース情報は [GitHubリポジトリ](https://github.com/Ikumyon/AutoLingua2) に掲載します。
+ソースコードは [GitHubリポジトリ](https://github.com/Ikumyon/AutoLingua2) に掲載しています。

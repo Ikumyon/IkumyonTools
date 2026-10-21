@@ -16,9 +16,9 @@
 - 出力先や文字数制限などの設定を次回起動時に復元。
 
 <!-- i18n:downloads -->
-## ダウンロード
+## 起動方法
 
-Windows版は[GitHub Releases](https://github.com/Ikumyon/Paradox-Interactive_music_MOD_support/releases/latest)の `OGG-File-Renamer.exe` をダウンロードして起動します。配布済みの実行ファイルを使う場合、Pythonを別途インストールする必要はありません。
+Windowsでは `OGG-File-Renamer.exe` を起動して使用します。Pythonを別途インストールする必要はありません。
 
 <!-- i18n:usage -->
 ## 使い方

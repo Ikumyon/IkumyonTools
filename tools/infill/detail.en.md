@@ -14,9 +14,9 @@
 - Restore your previous paths and settings when you launch the app again.
 
 <!-- i18n:downloads -->
-## Download and requirements
+## Requirements and launch
 
-`Infill.exe` is available for Windows 10 / 11 on [GitHub Releases](https://github.com/Ikumyon/Infill/releases/latest). Download and launch the executable. The prebuilt app does not require a Python installation.
+Supports Windows 10 / 11. Launch `Infill.exe` to use the app. A Python installation is not required.
 
 <!-- i18n:usage -->
 ## Getting started

@@ -17,17 +17,13 @@ It supports Paradox YAML and ParaTranz JSON. Plugins extend AI connections and f
 - **AI chat and automation**: Work through chat or connect tasks using scripts, triggers and MCP.
 
 <!-- i18n:installation -->
-## Download and launch
+## Launch and setup
 
-Choose the package for your operating system in this page’s download section.
-
-1. Download the ZIP for Windows or tar.gz for Linux and extract the entire folder.
+1. Extract the entire ZIP folder on Windows or tar.gz folder on Linux.
 2. Run `AUTOlingua2.exe` on Windows or `AUTOlingua2` on Linux. If Linux requires execute permission, run `chmod +x AUTOlingua2`.
 3. Keep the launcher and bundled `core` folder in their original layout. Do not move the executable alone.
 4. Choose the display language and AI connection and model during setup, then test the connection.
 5. Create a project, add source files and a target language, and start translating.
-
-**Distribution in preparation**: Download filenames are placeholders: `AUTOlingua2-windows.zip` for Windows and `AUTOlingua2-linux.tar.gz` for Linux. Downloads become available when matching assets are attached to a release.
 
 <!-- i18n:ai -->
 ## Using AI
@@ -48,4 +44,4 @@ The guide covers setup, projects, translation and review, glossaries and tone, e
 ## Updates and source code
 
 The app includes an update feature. Follow its prompts when updating.
-Source code and release information are published in the [GitHub repository](https://github.com/Ikumyon/AutoLingua2).
+Source code is published in the [GitHub repository](https://github.com/Ikumyon/AutoLingua2).

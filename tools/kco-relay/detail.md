@@ -8,12 +8,10 @@ Kancolle Stream Overlay と組み合わせることで、配信画面にBGM名�
 ## 主な機能
 
 ブラウザ拡張などから送られたタイトル情報をローカルで受信し、Kancolle Stream Overlay 側のBGM表示へ橋渡しします。
-Windows / Linux のデスクトップ上で動作する軽量な常駐アプリで、ビルド済みファイルは GitHub Releases から入手できます。
+Windows / Linux のデスクトップ上で動作する軽量な常駐アプリです。
 
 <!-- i18n:downloads -->
-## ダウンロード
-
-最新版は GitHub Releases のAssetとして配布されています。
+## 動作環境・起動方法
 
 - Windows: `kco-relay-windows-x86_64.zip` を展開し、`kco-relay.exe` を起動します。
 - Linux: `kco-relay-linux-x86_64.tar.gz` を展開し、`./kco-relay` を起動します。

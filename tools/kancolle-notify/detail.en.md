@@ -78,13 +78,6 @@ You can also run it directly with `bash install.sh`.
 
 3. Follow the prompts to enter your Cloudflare API token and notification destination.
 
-💡 **Install directly from the terminal**:  
-You can also set up the tool using this command:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Ikumyon/kancolle-notify/main/installer/install.sh | bash
-```
-
 📁 **Installation directory**:  
 By default, the installer creates a `kancolle-notify` folder in the directory where it was run. It places the daemon and dashboard in `desktop` and the browser extension in `extension`.
 

@@ -8,12 +8,10 @@ Together with Kancolle Stream Overlay, it displays BGM titles on your stream in 
 ## Features
 
 Receives title information from browser extensions and forwards it to the BGM display in Kancolle Stream Overlay.
-This lightweight companion runs on Windows / Linux. Prebuilt packages are available from GitHub Releases.
+This lightweight companion runs on Windows / Linux.
 
 <!-- i18n:downloads -->
-## Downloads
-
-The latest version is distributed as assets on GitHub Releases.
+## Requirements and launch
 
 - Windows: Extract `kco-relay-windows-x86_64.zip` and launch `kco-relay.exe`.
 - Linux: Extract `kco-relay-linux-x86_64.tar.gz` and launch `./kco-relay`.
