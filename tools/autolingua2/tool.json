@@ -55,5 +55,9 @@
   "downloads": {
     "windows": "AUTOlingua2-windows.zip",
     "linux": "AUTOlingua2-linux.tar.gz"
-  }
+  },
+  "tags": [
+    "ai",
+    "translation"
+  ]
 }

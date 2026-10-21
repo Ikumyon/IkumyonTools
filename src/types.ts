@@ -9,6 +9,9 @@ export interface ToolDownloads {
 
 export interface ToolManifest {
   github: string;
+  tags?: string[];
+  /** Pin a published release, including prereleases; omitted uses the latest stable release. */
+  releaseTag?: string;
   /** UI languages of the tool itself. Empty or omitted means unconfirmed. */
   supportedLanguages?: string[];
   icon?: string;
@@ -20,6 +23,7 @@ export interface ToolManifest {
 export interface ToolText {
   name: string;
   description: string;
+  tagLabels?: Record<string, string>;
 }
 
 export interface ToolItem {

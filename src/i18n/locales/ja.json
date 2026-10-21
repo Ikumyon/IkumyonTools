@@ -52,5 +52,17 @@
   "environment.noDownloads": "現在ダウンロード可能なファイルはありません。",
   "environment.browser": "お使いのブラウザ（{browser}）向けの拡張機能は現在提供されていません。",
   "environment.os": "お使いのOS（{os}）向けのファイルは現在提供されていません。",
-  "environment.alternatives": "{reason} 他のOS・ブラウザ用のファイルは下部より通常通りダウンロード可能です。"
+  "environment.alternatives": "{reason} 他のOS・ブラウザ用のファイルは下部より通常通りダウンロード可能です。",
+  "tags.label": "タグ",
+  "tags.filter": "タグで絞り込み",
+  "tags.help": "複数選択すると、すべてに一致するツールを表示します。",
+  "tags.selected": "選択中：",
+  "tags.clear": "すべて解除",
+  "tags.remove": "#{tag}を解除",
+  "tags.count": "{count}件のツール",
+  "tags.countOne": "{count}件のツール",
+  "tags.empty": "選択したタグすべてに一致するツールはありません。\nタグを外して絞り込みを変更してください。",
+  "sort.label": "並び替え",
+  "sort.asc": "ツール名：昇順",
+  "sort.desc": "ツール名：降順"
 }

@@ -1,0 +1,9 @@
+{
+  "name": "NRClipBuilder",
+  "description": "Preview railway data from N05, SHP, GeoJSON, and OSM on a map, filter by attributes, railway type, or area, and export NIMBY Rails nrclip files, GeoJSON, or JSON for Turnout.",
+  "tagLabels": {
+    "railway": "Railway",
+    "maps": "Maps",
+    "nimbyrails": "NIMBYRails"
+  }
+}

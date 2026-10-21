@@ -1,0 +1,8 @@
+{
+  "name": "SteamCMD Workshop Downloader",
+  "description": "A Windows GUI for SteamCMD. Extract IDs from Workshop and game URLs, retrieve items, inspect logs, and send authentication codes without memorizing commands.",
+  "tagLabels": {
+    "steam": "Steam",
+    "downloads": "Downloads"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "LiveVoiceBridge",
+  "description": "Read YouTube Live chat aloud with VOICEVOX, COEIROINK, Bouyomi-chan, or Supertonic engines. Includes pronunciation dictionaries, sound effects, voice effects, and a separate comment window.",
+  "tagLabels": {
+    "streaming": "Streaming",
+    "tts": "Text-to-speech"
+  }
+}

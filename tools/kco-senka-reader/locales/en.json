@@ -1,4 +1,7 @@
 {
   "name": "KCO Senka Reader",
-  "description": "A companion extension that observes received KanColle responses through the DevTools API, estimates regular senka from admiral XP, and sends it to Kancolle Stream Overlay."
+  "description": "A companion extension that observes received KanColle responses through the DevTools API, estimates regular senka from admiral XP, and sends it to Kancolle Stream Overlay.",
+  "tagLabels": {
+    "kancolle": "KanColle"
+  }
 }

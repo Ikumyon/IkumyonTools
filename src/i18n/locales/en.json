@@ -52,5 +52,17 @@
   "environment.noDownloads": "No downloads are currently available.",
   "environment.browser": "No extension is currently available for your browser ({browser}).",
   "environment.os": "No download is currently available for your OS ({os}).",
-  "environment.alternatives": "{reason} You can still download files for other operating systems or browsers below."
+  "environment.alternatives": "{reason} You can still download files for other operating systems or browsers below.",
+  "tags.label": "Tags",
+  "tags.filter": "Filter by tag",
+  "tags.help": "Select multiple tags to show tools matching all of them.",
+  "tags.selected": "Selected:",
+  "tags.clear": "Clear all",
+  "tags.remove": "Remove #{tag}",
+  "tags.count": "{count} tools",
+  "tags.countOne": "{count} tool",
+  "tags.empty": "No tools match all selected tags.\nRemove a tag to change the filter.",
+  "sort.label": "Sort",
+  "sort.asc": "Tool name: ascending",
+  "sort.desc": "Tool name: descending"
 }

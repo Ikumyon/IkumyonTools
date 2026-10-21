@@ -1,4 +1,8 @@
 {
   "name": "KCO title fetcher",
-  "description": "YouTube / ニコニコ動画の再生中タイトルを取得し、ローカルのKCO Relayへ送信するChrome / Edge向け補助拡張。"
+  "description": "YouTube / ニコニコ動画の再生中タイトルを取得し、ローカルのKCO Relayへ送信するChrome / Edge向け補助拡張。",
+  "tagLabels": {
+    "kancolle": "艦これ",
+    "streaming": "配信"
+  }
 }

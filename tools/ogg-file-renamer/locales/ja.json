@@ -1,4 +1,8 @@
 {
   "name": "OGG File Renamer",
-  "description": "Paradox製ゲームの音楽MOD作成を支援。日本語のOGGファイル名をローマ字に変換してコピーし、ゲーム内で元の日本語タイトルを表示するローカライズファイルを生成します。"
+  "description": "Paradox製ゲームの音楽MOD作成を支援。日本語のOGGファイル名をローマ字に変換してコピーし、ゲーム内で元の日本語タイトルを表示するローカライズファイルを生成します。",
+  "tagLabels": {
+    "modding": "MOD制作",
+    "music": "音楽"
+  }
 }

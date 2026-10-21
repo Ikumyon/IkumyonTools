@@ -1,0 +1,8 @@
+{
+  "name": "SteamCMD Workshop Downloader",
+  "description": "SteamCMDの操作を画面から行うWindows向けツール。WorkshopやゲームのURLからIDを読み取り、アイテムの取得、ログ確認、認証コードの送信をGUIで操作できます。",
+  "tagLabels": {
+    "steam": "Steam",
+    "downloads": "ダウンロード"
+  }
+}

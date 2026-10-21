@@ -1,0 +1,19 @@
+{
+  "github": "Ikumyon/steamCMDGUI",
+  "supportedLanguages": [
+    "ja",
+    "en"
+  ],
+  "icon": "icon.png",
+  "detail": "detail.md",
+  "images": [
+    "pictures/main.png"
+  ],
+  "downloads": {
+    "windows": "steamCMDGUI.zip"
+  },
+  "tags": [
+    "steam",
+    "downloads"
+  ]
+}

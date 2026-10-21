@@ -1,9 +1,11 @@
-import { t, localizedUrl, setupLanguage } from "./i18n";
+import { t, localizedUrl, setupLanguage, locale } from "./i18n";
 import { localizeTool } from "./i18n/tools";
 import { renderToolLanguages } from "./components/tool-languages";
+import { renderToolTags } from './components/tool-tags';
+import { collectTags, matchesTags, selectedTags, tagUrl } from './utils/tags.mjs';
 import { DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
 import { pageView } from './analytics';
-import { fetchLatestRelease } from "./api/github";
+import { fetchRelease } from "./api/github";
 import { getUserEnvironment, resolveMatchingPlatform } from "./utils/platform";
 import type { ToolManifest, ToolItem, PlatformKey, UserEnvironment } from "./types";
 
@@ -52,7 +54,9 @@ function resolveInitialDownload(
   }
 
   return {
-    url: `https://github.com/${manifest.github}/releases/latest/download/${match.filename}`,
+    url: manifest.releaseTag
+      ? `https://github.com/${manifest.github}/releases/download/${encodeURIComponent(manifest.releaseTag)}/${match.filename}`
+      : `https://github.com/${manifest.github}/releases/latest/download/${match.filename}`,
     filename: match.filename,
     platform: match.platform,
   };
@@ -98,6 +102,7 @@ function createToolCard(tool: ToolItem, env: UserEnvironment): HTMLElement {
         </div>
         <p class="tool-card-description">${escapeHtml(manifest.description)}</p>
       </a>
+      ${renderToolTags(manifest)}
       ${renderToolLanguages(manifest.supportedLanguages)}
       <div class="tool-card-actions">
         ${downloadBtnHtml}
@@ -129,7 +134,7 @@ async function updateReleasesAndDownloads(tools: ToolItem[]): Promise<void> {
       const targetPlatform = btn.getAttribute("data-platform");
       if (!targetPlatform) return;
 
-      const result = await fetchLatestRelease(tool.manifest.github);
+      const result = await fetchRelease(tool.manifest.github, tool.manifest.releaseTag);
       const release = result.release;
       if (!release) return;
 
@@ -165,12 +170,148 @@ async function init(): Promise<void> {
       return;
     }
 
+    const tags = collectTags(tools);
+    const filter = document.createElement('section');
+    filter.className = 'tag-filter';
+    filter.setAttribute('aria-label', t('tags.filter'));
+    const heading = document.createElement('h2');
+    heading.textContent = t('tags.filter');
+    const description = document.createElement('p');
+    description.id = 'tag-filter-help';
+    description.className = 'tag-filter-help';
+    description.textContent = t('tags.help');
+    const controls = document.createElement('div');
+    controls.className = 'tag-chips';
+    controls.setAttribute('role', 'group');
+    controls.setAttribute('aria-label', t('tags.filter'));
+    controls.setAttribute('aria-describedby', description.id);
+    const buttons = new Map<string, HTMLButtonElement>();
+    for (const tag of tags) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'tag-chip';
+      button.textContent = `#${tag.label}`;
+      button.addEventListener('click', () => {
+        const current = selectedTags(new URL(location.href), tags);
+        select(current.includes(tag.id) ? current.filter(id => id !== tag.id) : [...current, tag.id]);
+      });
+      controls.append(button);
+      buttons.set(tag.id, button);
+    }
+    const selectedRow = document.createElement('div');
+    selectedRow.className = 'tag-selection';
+    const selectedLabel = document.createElement('span');
+    selectedLabel.textContent = t('tags.selected');
+    const removals = document.createElement('div');
+    removals.className = 'tag-chips';
+    const clear = document.createElement('button');
+    clear.type = 'button';
+    clear.className = 'tag-clear';
+    clear.textContent = t('tags.clear');
+    clear.addEventListener('click', () => {
+      select([]);
+      buttons.values().next().value?.focus();
+    });
+    selectedRow.append(selectedLabel, removals, clear);
+    const count = document.createElement('p');
+    count.className = 'tag-result-count';
+    count.setAttribute('role', 'status');
+    count.setAttribute('aria-live', 'polite');
+    count.setAttribute('aria-atomic', 'true');
+    const empty = document.createElement('p');
+    empty.className = 'tag-empty';
+    empty.textContent = t('tags.empty');
+    empty.hidden = true;
+    const sortButton = document.createElement('button');
+    sortButton.type = 'button';
+    sortButton.className = 'tool-sort';
+    const sortIcon = document.createElement('i');
+    sortIcon.setAttribute('aria-hidden', 'true');
+    sortButton.append(sortIcon);
+    sortButton.addEventListener('click', () => {
+      const url = new URL(location.href);
+      if (url.searchParams.get('sort') !== 'desc') url.searchParams.set('sort', 'desc');
+      else url.searchParams.delete('sort');
+      if (url.href !== location.href) history.pushState(null, '', url);
+      refresh();
+    });
+    const toolbar = document.createElement('div');
+    toolbar.className = 'tool-toolbar';
+    toolbar.append(count, sortButton);
+    const collator = new Intl.Collator(locale, { numeric: true, sensitivity: 'base' });
+    filter.append(heading, description, controls, selectedRow, toolbar);
+    gridEl.before(filter);
+    gridEl.after(empty);
     const fragment = document.createDocumentFragment();
+    const cards = new Map<string, HTMLElement>();
     for (const tool of tools) {
-      fragment.appendChild(createToolCard(tool, env));
+      const card = createToolCard(tool, env);
+      cards.set(tool.id, card);
+      fragment.appendChild(card);
     }
 
     gridEl.appendChild(fragment);
+    function refresh(): void {
+      const url = new URL(location.href);
+      const selected = selectedTags(url, tags);
+      const normalized = tagUrl(url, selected);
+      const descending = url.searchParams.get('sort') === 'desc';
+      sortIcon.className = `fa-solid ${descending ? 'fa-arrow-down-z-a' : 'fa-arrow-down-a-z'}`;
+      sortButton.title = `${t(descending ? 'sort.desc' : 'sort.asc')} → ${t(descending ? 'sort.asc' : 'sort.desc')}`;
+      sortButton.setAttribute('aria-label', sortButton.title);
+      if (!descending) normalized.searchParams.delete('sort');
+      if (normalized.href !== url.href) history.replaceState(history.state, '', normalized);
+      const ordered = [...tools].sort((a, b) => {
+        const result = collator.compare(a.manifest.name, b.manifest.name);
+        return (descending ? -result : result) || a.id.localeCompare(b.id);
+      });
+      for (const tool of ordered) gridEl!.append(cards.get(tool.id)!);
+      let visible = 0;
+      for (const tool of tools) {
+        const matches = matchesTags(tool.manifest, selected);
+        cards.get(tool.id)!.hidden = !matches;
+        if (matches) visible++;
+      }
+      for (const tag of tags) {
+        const active = selected.includes(tag.id);
+        const button = buttons.get(tag.id)!;
+        button.setAttribute('aria-pressed', String(active));
+        button.textContent = `${active ? '✓ ' : ''}#${tag.label}`;
+        button.setAttribute('aria-label', `#${tag.label}`);
+      }
+      removals.replaceChildren();
+      for (const tag of tags.filter(tag => selected.includes(tag.id))) {
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'tag-chip tag-remove';
+        remove.textContent = `#${tag.label} ×`;
+        remove.setAttribute('aria-label', t('tags.remove', { tag: tag.label }));
+        remove.addEventListener('click', () => {
+          select(selected.filter(id => id !== tag.id));
+          buttons.get(tag.id)!.focus();
+        });
+        removals.append(remove);
+      }
+      selectedRow.hidden = selected.length === 0;
+      count.textContent = t(visible === 1 ? 'tags.countOne' : 'tags.count', { count: visible });
+      empty.hidden = visible !== 0;
+    }
+    function select(selected: string[]): void {
+      const url = new URL(location.href);
+      const next = tagUrl(url, selectedTags(tagUrl(url, selected), tags));
+      if (next.href !== location.href) history.pushState(null, '', next);
+      refresh();
+    }
+    gridEl.addEventListener('click', event => {
+      if (!(event instanceof MouseEvent) || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[data-tag]') : null;
+      if (!target) return;
+      event.preventDefault();
+      const selected = selectedTags(new URL(location.href), tags);
+      if (target.dataset.tag && !selected.includes(target.dataset.tag)) select([...selected, target.dataset.tag]);
+    });
+    window.addEventListener('popstate', refresh);
+    refresh();
     if (statusEl) {
       statusEl.remove();
     }

@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { runInNewContext } from 'node:vm';
 import ts from 'typescript';
+import { resolveTagLabels } from '../src/utils/tags.mjs';
 const source = ts.transpileModule(readFileSync(new URL('../src/i18n/tools.ts', import.meta.url), 'utf8'), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
 function setup(locale, fetch) {
   const exports = {};
-  runInNewContext(source, { exports, encodeURIComponent, fetch, require: path => path === './index' ? { locale } : path === './languages.mjs' ? { SOURCE_LOCALE: 'ja' } : {} });
+  runInNewContext(source, { exports, encodeURIComponent, fetch, require: path => path === './index' ? { locale } : path === './languages.mjs' ? { SOURCE_LOCALE: 'ja' } : path === '../utils/tags.mjs' ? { resolveTagLabels } : {} });
   return exports;
 }
 test('loads newly added tool text without a compiled tool registry and revalidates caches', async () => {
@@ -27,4 +28,17 @@ test('falls back to Japanese when translated text fails and rejects missing sour
   await assert.rejects(missing.localizeTool({}, 'missing'), /Unable to load/);
   const invalid = setup('ja', async () => Response.json({ description: 'name missing' }));
   await assert.rejects(invalid.localizeTool({}, 'invalid'), /Invalid tool text/);
+});
+
+test('missing translated tag labels fall back without replacing translated tool text', async () => {
+  const api = setup('en', async path => Response.json(path.endsWith('/en.json')
+    ? { name: 'English', description: 'Description' }
+    : { name: '日本語', description: '説明', tagLabels: { kancolle: '艦これ' } }));
+  const result = await api.localizeTool({ tags: ['kancolle', 'new'] }, 'new-tool');
+  assert.equal(result.name, 'English');
+  assert.equal(result.tagLabels.kancolle, '艦これ');
+  assert.equal(result.tagLabels.new, 'new');
+  const unavailable = setup('en', async path => path.endsWith('/en.json')
+    ? Response.json({ name: 'English', description: 'Description' }) : new Response(null, { status: 404 }));
+  assert.equal((await unavailable.localizeTool({ tags: ['new'] }, 'new-tool')).tagLabels.new, 'new');
 });

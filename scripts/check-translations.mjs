@@ -19,6 +19,23 @@ export function checkToolLanguages(languages, label = "tool") {
   return [];
 }
 
+export function checkTags(tags, labels, registry = new Map(), label = 'tool') {
+  if (tags === undefined) return [];
+  if (!Array.isArray(tags) || tags.some(id => typeof id !== 'string' || !/^[a-z0-9][a-z0-9_-]*$/.test(id))) return [`${label}: invalid tags`];
+  const errors = [];
+  if (new Set(tags).size !== tags.length) errors.push(`${label}: duplicate tags`);
+  for (const id of tags) {
+    const value = labels?.[id];
+    if (typeof value !== 'string' || !value.trim()) {
+      errors.push(`${label}: missing tag label: ${id}`);
+    } else {
+      if (registry.has(id) && registry.get(id) !== value) errors.push(`${label}: inconsistent tag label: ${id}`);
+      registry.set(id, value);
+    }
+  }
+  return errors;
+}
+
 /** Check exact key/placeholder parity and source review records. */
 export function checkCatalog(source, translated, reviewed = {}, label = "catalog") {
   const errors = [];
@@ -79,7 +96,9 @@ function loadScope(scope, language) {
   const manifest = json(`${base}/tool.json`);
   const detail = language === SOURCE_LOCALE ? manifest.detail : manifest.detail.replace(/\.md$/, `.${language}.md`);
   const blocks = parseBlocks(read(`${base}/${detail}`));
-  return { ...json(`${base}/locales/${language}.json`),
+  const { tagLabels = {}, ...text } = json(`${base}/locales/${language}.json`);
+  return { ...text,
+    ...Object.fromEntries(Object.entries(tagLabels).map(([id, value]) => [`tagLabels.${id}`, value])),
     ...Object.fromEntries([...blocks].map(([id, body]) => [`detail.${id}`, body])) };
 }
 
@@ -89,6 +108,7 @@ function metadataPath(scope) {
 
 export function checkTranslations() {
   const errors = [];
+  const tagRegistries = new Map(SUPPORTED_LOCALES.map(language => [language, new Map()]));
   const ui = json("src/i18n/locales/ja.json");
   // Detect misspelled IDs in static markup and literal t() calls as well.
   const sourceFiles = ["index.html", "tool.html"];
@@ -126,6 +146,10 @@ export function checkTranslations() {
         const base = `tools/${scope}`;
         const manifest = json(`${base}/tool.json`);
         errors.push(...checkToolLanguages(manifest.supportedLanguages, scope));
+        for (const language of SUPPORTED_LOCALES) {
+          const text = json(`${base}/locales/${language}.json`);
+          errors.push(...checkTags(manifest.tags, text.tagLabels, tagRegistries.get(language), `${scope}/${language}`));
+        }
         for (const file of [manifest.detail, manifest.icon, ...(manifest.images || [])].filter(Boolean)) {
           if (!existsSync(resolve(root, base, file))) errors.push(`${scope}: missing asset: ${file}`);
         }
@@ -157,7 +181,8 @@ function reviewPatch(scope) {
 function template(scope) {
   if (!scopes().includes(scope)) throw new Error(`Unknown scope: ${scope}`);
   const source = loadScope(scope, SOURCE_LOCALE);
-  const text = Object.fromEntries(Object.entries(source).filter(([id]) => !id.startsWith("detail.")));
+  const text = Object.fromEntries(Object.entries(source).filter(([id]) => !id.startsWith("detail.") && !id.startsWith('tagLabels.')));
+  if (scope !== 'ui') text.tagLabels = Object.fromEntries(Object.entries(source).filter(([id]) => id.startsWith('tagLabels.')).map(([id, value]) => [id.slice(10), value]));
   // This is deliberately a draft, printed only; translate before applying.
   console.log(JSON.stringify(text, null, 2));
   if (scope !== "ui") console.log("\n" + Object.entries(source).filter(([id]) => id.startsWith("detail."))

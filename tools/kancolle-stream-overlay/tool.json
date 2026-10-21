@@ -1,6 +1,8 @@
 {
   "github": "Ikumyon/Kancolle-Stream-Overlay",
-  "supportedLanguages": ["ja"],
+  "supportedLanguages": [
+    "ja"
+  ],
   "icon": "pictures/icon.webp",
   "detail": "detail.md",
   "downloads": {
@@ -11,5 +13,9 @@
     "pictures/information.webp",
     "pictures/timer.webp",
     "pictures/settings.webp"
+  ],
+  "tags": [
+    "kancolle",
+    "streaming"
   ]
 }

@@ -53,6 +53,18 @@
     "environment.noDownloads": "9a2bf3bdbbb43d06ac0e036e89ef828d5cfba1803cbc77f7e22fdc1758c1f49b",
     "environment.browser": "f19f8a8b94e7e406155280c29238aa2bfeb0b2c8b83ac7bcb9a3bc4c8b6efaba",
     "environment.os": "516c9d214a49bf1b6f4ad1c7818450d651042184307b6efbdb542adcda29406c",
-    "environment.alternatives": "ff65a098d1d880b53c9e6a02cf75be4cd415e7a29246dbea0a3464fd94fb84d3"
+    "environment.alternatives": "ff65a098d1d880b53c9e6a02cf75be4cd415e7a29246dbea0a3464fd94fb84d3",
+    "tags.label": "302eafc71d9d24e6aaea6886617e6d1ab9e9e380abbc1caf4bc3beecae7d5375",
+    "tags.filter": "cd109965209c9d712437cc3734bc3bcbf5621a6abef169a7c21b2e496c92c14a",
+    "tags.help": "7926d3b2d77f4b23d7acb5542a11c24761cf62d2cf796c765e53994c4036cbdd",
+    "tags.selected": "a10cc50da75eb4dc6d05d9ffe6f012a861a6c6d6c9cb1c10a7877a34d80f9e98",
+    "tags.clear": "1a67bddb0d504af3f09a2b561971d8c74436ff7286e424cf9dc7d321aae8a1e2",
+    "tags.remove": "cea1f262169f7e9320c9ca4ea30f5204394e99066ba01c5e19b998a17867ed4f",
+    "tags.count": "35b3ff1af940a79e4044dd88fc51e8eb8b9f58e57b6d0b14c16f237d1882beae",
+    "tags.countOne": "35b3ff1af940a79e4044dd88fc51e8eb8b9f58e57b6d0b14c16f237d1882beae",
+    "tags.empty": "87a1ca5d6f63ef468f32e5936541b61e743a21e3608f76b229dd636339069da2",
+    "sort.label": "c391592017434c4f283ea96d8fc5b345e4dfafe77b5881894b828647d55bd7c2",
+    "sort.asc": "fa4a564be96a97a30c378081aecc6e7333bbdff662836d6c6bfad571ab38a267",
+    "sort.desc": "026da1be556f0d24dbff8a5ab9e2fc926faf232effb4c08df1988761f170d634"
   }
 }

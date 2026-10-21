@@ -2,6 +2,7 @@ import { locale, type Locale } from "./index";
 import { overlayMarkdown, parseBlocks } from "./core.mjs";
 import { SOURCE_LOCALE } from "./languages.mjs";
 import type { ToolManifest, ToolText } from "../types";
+import { resolveTagLabels } from '../utils/tags.mjs';
 
 // Fetch per-tool text at runtime so newly published tools do not depend on
 // the list of locale files embedded in an older JavaScript bundle.
@@ -12,7 +13,7 @@ export async function localizeTool(manifest: ToolManifest, id: string): Promise<
     if (!response.ok) throw new Error(`Unable to load ${path}: ${response.status}`);
     const text = await response.json();
     if (typeof text?.name !== 'string' || !text.name.trim() || typeof text.description !== 'string') throw new Error(`Invalid tool text: ${id}/${language}`);
-    return { name: text.name, description: text.description };
+    return { name: text.name, description: text.description, tagLabels: text.tagLabels };
   };
   let text: ToolText;
   try { text = await load(locale); }
@@ -20,7 +21,12 @@ export async function localizeTool(manifest: ToolManifest, id: string): Promise<
     if (locale === SOURCE_LOCALE) throw error;
     text = await load(SOURCE_LOCALE);
   }
-  return { ...manifest, ...text };
+  let sourceLabels = text.tagLabels;
+  if (locale !== SOURCE_LOCALE && manifest.tags?.some(tag => !text.tagLabels?.[tag]?.trim())) {
+    try { sourceLabels = (await load(SOURCE_LOCALE)).tagLabels; }
+    catch { /* Unavailable labels fall back to their stable IDs. */ }
+  }
+  return { ...manifest, ...text, tagLabels: resolveTagLabels(manifest.tags, text.tagLabels, sourceLabels) };
 }
 
 async function fetchText(path: string): Promise<string> {

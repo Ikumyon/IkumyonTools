@@ -1,4 +1,8 @@
 {
   "name": "KCO Relay",
-  "description": "A desktop companion that relays BGM titles from KCO title fetcher and other tools to your stream overlay locally."
+  "description": "A desktop companion that relays BGM titles from KCO title fetcher and other tools to your stream overlay locally.",
+  "tagLabels": {
+    "kancolle": "KanColle",
+    "streaming": "Streaming"
+  }
 }

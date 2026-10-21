@@ -1,10 +1,17 @@
 {
   "github": "Ikumyon/Infill",
-  "supportedLanguages": ["ja"],
+  "supportedLanguages": [
+    "ja"
+  ],
   "icon": "icon.ico",
   "detail": "detail.md",
-  "images": ["pictures/main.png"],
+  "images": [
+    "pictures/main.png"
+  ],
   "downloads": {
     "windows": "Infill.exe"
-  }
+  },
+  "tags": [
+    "text-processing"
+  ]
 }

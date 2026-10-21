@@ -1,6 +1,8 @@
 {
   "github": "Ikumyon/KCO-relay",
-  "supportedLanguages": ["ja"],
+  "supportedLanguages": [
+    "ja"
+  ],
   "icon": "icon.webp",
   "detail": "detail.md",
   "images": [
@@ -10,5 +12,9 @@
   "downloads": {
     "windows": "kco-relay-windows-x86_64.zip",
     "linux": "kco-relay-linux-x86_64.tar.gz"
-  }
+  },
+  "tags": [
+    "kancolle",
+    "streaming"
+  ]
 }

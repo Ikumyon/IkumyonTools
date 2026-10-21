@@ -1,4 +1,8 @@
 {
   "name": "kancolle-notify",
-  "description": "Passively monitors KanColle expedition, repair, anchorage repair and fatigue timers, with notifications via Cloudflare Workers and a desktop companion."
+  "description": "Passively monitors KanColle expedition, repair, anchorage repair and fatigue timers, with notifications via Cloudflare Workers and a desktop companion.",
+  "tagLabels": {
+    "kancolle": "KanColle",
+    "notifications": "Notifications"
+  }
 }

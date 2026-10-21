@@ -67,11 +67,11 @@ function storeRateLimit(info: GitHubRateLimitInfo): void {
 }
 
 /**
- * 指定されたリポジトリの最新Release情報を取得します。
+ * 指定タグ、または最新の安定版のRelease情報を取得します。
  * レートリミット発生時は理由とリセット時刻を返します。
  */
-export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResult> {
-  const cacheKey = `${RELEASE_CACHE_KEY_PREFIX}${repo}`;
+export async function fetchRelease(repo: string, tag = 'latest'): Promise<FetchReleaseResult> {
+  const cacheKey = `${RELEASE_CACHE_KEY_PREFIX}${repo}/${tag}`;
 
   // 1. キャッシュされたリリース情報があれば返す
   try {
@@ -100,7 +100,8 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
     };
   }
 
-  const url = `https://api.github.com/repos/${repo}/releases/latest`;
+  const releasePath = tag === 'latest' ? 'latest' : `tags/${encodeURIComponent(tag)}`;
+  const url = `https://api.github.com/repos/${repo}/releases/${releasePath}`;
   try {
     const response = await fetch(url, {
       headers: {
@@ -141,7 +142,7 @@ export async function fetchLatestRelease(repo: string): Promise<FetchReleaseResu
         error: {
           type: "not_found",
           status: 404,
-          message: "No latest release found.",
+          message: "Release not found.",
           rateLimit,
         },
       };

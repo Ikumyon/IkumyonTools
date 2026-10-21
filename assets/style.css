@@ -33,6 +33,31 @@
 }
 
 * { box-sizing: border-box; }
+
+.tool-card[hidden] { display: none; }
+.tool-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.tool-tag { color: var(--accent); font-size: .85rem; text-decoration: none; overflow-wrap: anywhere; padding: 3px 8px; border-radius: 8px; background: var(--surface-2); }
+.tool-tag:hover { text-decoration: underline; }
+.tag-filter { margin-bottom: 20px; min-width: 0; }
+.tag-filter h2 { font-size: 1rem; margin: 0 0 6px; }
+.tag-filter-help { color: var(--muted); font-size: .9rem; margin: 0 0 12px; }
+.tag-chips, .tag-selection { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-width: 0; }
+.tag-chip, .tag-clear { font: inherit; font-size: .9rem; cursor: pointer; max-width: 100%; overflow-wrap: anywhere; }
+.tag-chip { color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 9px 14px; }
+.tag-chip:hover { border-color: var(--accent); }
+.tag-chip[aria-pressed="true"] { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.tag-selection { margin-top: 16px; font-size: .9rem; }
+.tag-selection[hidden] { display: none; }
+.tag-remove { background: var(--surface-2); }
+.tag-clear { color: var(--accent); background: transparent; border: 0; padding: 9px; text-decoration: underline; }
+.tag-result-count { color: var(--muted); margin: 16px 0 0; }
+.tool-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
+.tool-toolbar .tag-result-count { margin: 0; }
+.tool-sort { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 1.2rem; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+.tool-sort:hover { color: var(--accent); border-color: var(--accent); }
+.tool-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.tag-empty { padding: 24px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); white-space: pre-line; }
+.tag-chip:focus-visible, .tag-clear:focus-visible, .tool-tag:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 html { min-height: 100%; background: var(--bg); }
 body { margin: 0; min-height: 100vh; color: var(--text); background: var(--bg); }
 a { color: inherit; }

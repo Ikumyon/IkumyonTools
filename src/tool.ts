@@ -2,8 +2,9 @@ import { t, formatDate, formatTime, setupLanguage } from "./i18n";
 import { localizeTool, loadToolDetail } from "./i18n/tools";
 import { pageView } from './analytics';
 import { renderToolLanguages } from "./components/tool-languages";
+import { renderToolTags } from './components/tool-tags';
 import { DEFAULT_PLACEHOLDER_ICON, PLATFORM_CONFIG } from "./config";
-import { fetchLatestRelease } from "./api/github";
+import { fetchRelease } from "./api/github";
 import { formatBytes } from "./utils/format";
 import { getUserEnvironment, checkToolCompatibility } from "./utils/platform";
 import { renderMarkdown, setupRenderedMarkdownEffects } from "./utils/markdown";
@@ -52,7 +53,9 @@ function buildDownloadOptions(
     } else {
       // 通常のGitHub Releasesアセット
       filename = value;
-      url = `https://github.com/${manifest.github}/releases/latest/download/${filename}`;
+      url = manifest.releaseTag
+        ? `https://github.com/${manifest.github}/releases/download/${encodeURIComponent(manifest.releaseTag)}/${filename}`
+        : `https://github.com/${manifest.github}/releases/latest/download/${filename}`;
 
       if (release) {
         const asset = release.assets.find((a) => a.name === filename);
@@ -111,7 +114,7 @@ function renderSidebar(
   const { release, error } = releaseResult;
   const iconSrc = manifest.icon ? `${basePath}/${manifest.icon}` : DEFAULT_PLACEHOLDER_ICON;
   
-  const versionText = release?.tag_name || t("release.latest");
+  const versionText = release?.tag_name || manifest.releaseTag || t("release.latest");
   
   const releaseDateText = release?.published_at
     ? formatDate(release.published_at)
@@ -227,6 +230,7 @@ function renderSidebar(
       </div>
 
       <div class="sidebar-meta-part">
+        ${renderToolTags(manifest)}
         ${renderToolLanguages(manifest.supportedLanguages)}
         ${versionHtml}
         ${
@@ -456,7 +460,7 @@ async function initDetail(): Promise<void> {
 
     // Release情報とMarkdownを並行取得
     const [releaseResult, detail] = await Promise.all([
-      fetchLatestRelease(manifest.github),
+      fetchRelease(manifest.github, manifest.releaseTag),
       manifest.detail
         ? loadToolDetail(basePath, manifest.detail)
         : Promise.resolve(null),

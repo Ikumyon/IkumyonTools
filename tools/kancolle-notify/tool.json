@@ -1,6 +1,8 @@
 {
   "github": "Ikumyon/kancolle-notify",
-  "supportedLanguages": ["ja"],
+  "supportedLanguages": [
+    "ja"
+  ],
   "icon": "icon.webp",
   "images": [
     "pictures/extension-overview.webp",
@@ -11,5 +13,9 @@
   "downloads": {
     "windows": "kancolle-notify-setup.exe",
     "linux": "install.sh"
-  }
+  },
+  "tags": [
+    "kancolle",
+    "notifications"
+  ]
 }

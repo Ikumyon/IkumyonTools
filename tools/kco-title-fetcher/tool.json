@@ -1,6 +1,8 @@
 {
   "github": "Ikumyon/KCO-title-fetcher",
-  "supportedLanguages": ["ja"],
+  "supportedLanguages": [
+    "ja"
+  ],
   "icon": "icon.webp",
   "images": [
     "pictures/main.webp",
@@ -9,5 +11,9 @@
   "detail": "detail.md",
   "downloads": {
     "chrome": "branch:main"
-  }
+  },
+  "tags": [
+    "kancolle",
+    "streaming"
+  ]
 }
