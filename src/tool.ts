@@ -441,15 +441,15 @@ async function initDetail(): Promise<void> {
   const basePath = `tools/${encodeURIComponent(toolId)}`;
 
   try {
-    const catalogResponse = await fetch('tools-catalog.json');
+    const catalogResponse = await fetch('tools-catalog.json', { cache: 'no-cache' });
     if (!catalogResponse.ok) throw new Error('Unable to load tool catalog');
     const catalog = await catalogResponse.json() as { tools: { id: string }[] };
     if (!catalog.tools.some(tool => tool.id === toolId)) throw new Error('Unknown tool');
-    const manifestRes = await fetch(`${basePath}/tool.json`);
+    const manifestRes = await fetch(`${basePath}/tool.json`, { cache: 'no-cache' });
     if (!manifestRes.ok) {
       throw new Error(`ツール情報 (tool.json) の取得に失敗しました: ${toolId}`);
     }
-    const manifest = localizeTool(await manifestRes.json(), toolId);
+    const manifest = await localizeTool(await manifestRes.json(), toolId);
     pageView({ page: 'tool', tool_id: toolId });
 
     document.title = `${manifest.name} | Ikumyon Tools`;

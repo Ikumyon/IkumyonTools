@@ -8,18 +8,18 @@ import { getUserEnvironment, resolveMatchingPlatform } from "./utils/platform";
 import type { ToolManifest, ToolItem, PlatformKey, UserEnvironment } from "./types";
 
 async function loadTools(): Promise<ToolItem[]> {
-  const response = await fetch('tools-catalog.json');
+  const response = await fetch('tools-catalog.json', { cache: 'no-cache' });
   if (!response.ok) throw new Error('Unable to load tool catalog');
   const catalog = await response.json() as { tools: { id: string }[] };
   const results = await Promise.all(
     catalog.tools.map(async ({ id }) => {
       try {
         const basePath = `tools/${id}`;
-        const response = await fetch(`${basePath}/tool.json`);
+        const response = await fetch(`${basePath}/tool.json`, { cache: 'no-cache' });
         if (!response.ok) {
           throw new Error(`Failed to load ${id}`);
         }
-        const manifest = localizeTool(await response.json(), id);
+        const manifest = await localizeTool(await response.json(), id);
         return { id, manifest, basePath };
       } catch (err) {
         console.warn(`ツール情報ロード失敗: ${id}`, err);

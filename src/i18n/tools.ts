@@ -3,20 +3,28 @@ import { overlayMarkdown, parseBlocks } from "./core.mjs";
 import { SOURCE_LOCALE } from "./languages.mjs";
 import type { ToolManifest, ToolText } from "../types";
 
-// Vite includes these small text catalogs in both development and production.
-const catalogs = import.meta.glob<ToolText>("../../tools/*/locales/*.json", {
-  eager: true, import: "default",
-});
-
-export function localizeTool(manifest: ToolManifest, id: string): ToolManifest & ToolText {
-  const text = catalogs[`../../tools/${id}/locales/${locale}.json`]
-    || catalogs[`../../tools/${id}/locales/${SOURCE_LOCALE}.json`];
-  if (!text) throw new Error(`Missing tool text: ${id}`);
+// Fetch per-tool text at runtime so newly published tools do not depend on
+// the list of locale files embedded in an older JavaScript bundle.
+export async function localizeTool(manifest: ToolManifest, id: string): Promise<ToolManifest & ToolText> {
+  const load = async (language: string): Promise<ToolText> => {
+    const path = `tools/${encodeURIComponent(id)}/locales/${language}.json`;
+    const response = await fetch(path, { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`Unable to load ${path}: ${response.status}`);
+    const text = await response.json();
+    if (typeof text?.name !== 'string' || !text.name.trim() || typeof text.description !== 'string') throw new Error(`Invalid tool text: ${id}/${language}`);
+    return { name: text.name, description: text.description };
+  };
+  let text: ToolText;
+  try { text = await load(locale); }
+  catch (error) {
+    if (locale === SOURCE_LOCALE) throw error;
+    text = await load(SOURCE_LOCALE);
+  }
   return { ...manifest, ...text };
 }
 
 async function fetchText(path: string): Promise<string> {
-  const response = await fetch(path);
+  const response = await fetch(path, { cache: 'no-cache' });
   if (!response.ok) throw new Error(`Unable to load ${path}: ${response.status}`);
   return response.text();
 }
