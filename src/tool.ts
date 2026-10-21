@@ -119,19 +119,19 @@ function renderSidebar(
 
   const hasMultiplePlatforms = downloadOptions.length > 1;
 
-  const tabsHtml = hasMultiplePlatforms
+  const tabsHtml = downloadOptions.length > 0
     ? `
-      <div class="platform-tabs" role="tablist" aria-label="${t("detail.selectPlatform")}">
+      <div class="platform-tabs" role="${hasMultiplePlatforms ? 'tablist' : 'group'}" aria-label="${t("common.platforms")}">
         ${downloadOptions
           .map(
             (opt, idx) => `
-          <button class="platform-tab ${idx === 0 ? "active" : ""}"
+          ${hasMultiplePlatforms ? `<button class="platform-tab ${idx === 0 ? "active" : ""}"
                   type="button"
                   role="tab"
                   aria-selected="${idx === 0}"
-                  data-platform-tab="${opt.platform}">
+                  data-platform-tab="${opt.platform}">` : '<span class="platform-tab platform-label active">'}
             <i class="${opt.iconClass}"></i> ${escapeHtml(opt.label)}
-          </button>
+          ${hasMultiplePlatforms ? '</button>' : '</span>'}
         `
           )
           .join("")}
