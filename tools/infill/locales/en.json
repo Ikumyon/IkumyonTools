@@ -1,0 +1,4 @@
+{
+  "name": "Infill",
+  "description": "A Windows app that fills text templates with CSV rows to generate files in bulk. Preview the results, then export a separate file for each row or combine all rows into one file."
+}
