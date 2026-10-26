@@ -1,6 +1,6 @@
 {
   "name": "LiveVoiceBridge",
-  "description": "YouTube Liveのコメントを音声合成で読み上げる配信用アプリ。VOICEVOX・COEIROINK・棒読みちゃん・Supertonic系エンジンに対応し、辞書・効果音・音声エフェクト・独立コメント表示を使えます。",
+  "description": "YouTube Liveのチャットを読み上げるWindows・Linux向けアプリ。VOICEVOX・COEIROINK・棒読みちゃん・Qwen3-TTSに対応し、TTSプラグイン、読み替え辞書、効果音、PiPコメント表示、システム監視を使えます。",
   "tagLabels": {
     "streaming": "配信",
     "tts": "音声読み上げ"

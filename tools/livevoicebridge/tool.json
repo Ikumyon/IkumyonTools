@@ -1,13 +1,13 @@
 {
   "github": "Ikumyon/LiveVoiceBridge",
-  "releaseTag": "v0.99.0",
   "supportedLanguages": [
     "ja"
   ],
   "icon": "icon.png",
   "detail": "detail.md",
   "downloads": {
-    "windows": "LiveVoiceBridge.exe"
+    "windows": "LiveVoiceBridge-Windows-x64.zip",
+    "linux": "LiveVoiceBridge-Linux-x64.tar.gz"
   },
   "tags": [
     "streaming",

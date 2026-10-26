@@ -1,14 +1,16 @@
 {
   "en": {
     "name": "a663d520950acfd6f35e478119d491ecb3efe5c49ae8292b32a98182f6a518ad",
-    "description": "cf001b1bdd703b38d341817451e966b737a1d147281118f48d8838692dd359f6",
-    "detail.overview": "d89ab24074773ae70b05d93f295526aa4d4ba2ba3cef1fd47ac86327a8904969",
-    "detail.features": "9b0e999616cc910de8710d88952806fef716f617f097e8da7f1f73db4ba2a7df",
-    "detail.requirements": "8c80d43ed3eca77c6e1cf8fe7cc7f41f3400a5c0bed23c14686ea7974f446b5c",
-    "detail.usage": "65bd628db16a312608cf7193a1cc904288ff617b3dfc070a9893e12211ce00fe",
-    "detail.commands": "2d579d3a6c2cc1a1c2b5bba17b88a70a00845433b819210d8dfafddc7d128598",
-    "detail.guide": "cd0da3f68c36210dda8716c83a51e16544e1fe06f380a5156c62c5a10a8d3a4b",
+    "description": "053da7cc89c32aadf80d56ce272445cd21d10e5a7fb96eecdb24026552b02208",
     "tagLabels.streaming": "b830e8df533dca0aaee1316d413a8e819d228dc571369a1630cd0705e87e1d4e",
-    "tagLabels.tts": "b8bfeddac862463c1a7df8d72490fe1690c53f0b3aa30befcf1a5d5b907e7b39"
+    "tagLabels.tts": "b8bfeddac862463c1a7df8d72490fe1690c53f0b3aa30befcf1a5d5b907e7b39",
+    "detail.overview": "f92080ed9f55f6ca138e7adec8532137b4490b2c4383fca884e7a70344dadc70",
+    "detail.features": "eb9ddb1760dcb8c55c7ee2b7a6800b7dd1e523c4cb85890955c1aee96f25ebdf",
+    "detail.requirements": "f89419a4e3accde86fbfb1530738fa16dd56e86d333173522207e5bb15d43aa4",
+    "detail.qwen": "52328719790128479e7535ec7daa9aa0791ea8b8c8b742b026afc9db769514b3",
+    "detail.usage": "d2c8e37d5c471a1eeebf77e702b56ad847d8c7fe19ab9ba04024d742a8747794",
+    "detail.commands": "90975723771ba4c60c29f4bf9f93008b91a13cd934b998b97703ea768516e79a",
+    "detail.plugins": "9ddb571dfd70b89e81037c5ec84008b419d7aa8c23354e36aa64f94a6c2c3af4",
+    "detail.guide": "246f9d3b83fe82ebe5e4a7d188f5330f04856a19f7d7d9016a777d11caf81a78"
   }
 }

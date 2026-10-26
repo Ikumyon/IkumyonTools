@@ -1,6 +1,6 @@
 {
   "name": "LiveVoiceBridge",
-  "description": "Read YouTube Live chat aloud with VOICEVOX, COEIROINK, Bouyomi-chan, or Supertonic engines. Includes pronunciation dictionaries, sound effects, voice effects, and a separate comment window.",
+  "description": "Read YouTube Live chat aloud on Windows and Linux with VOICEVOX, COEIROINK, Bouyomi-chan, or Qwen3-TTS. Includes TTS plugins, pronunciation dictionaries, sound effects, PiP comments, and system monitoring.",
   "tagLabels": {
     "streaming": "Streaming",
     "tts": "Text-to-speech"
