@@ -1,11 +1,12 @@
 {
   "en": {
     "name": "8049bba16079176e2c9789e0abd16fd1bf816dd82909e5ade26f6959b8dee40d",
-    "description": "6aa25af5ed2f67072c2be893705a353b1e06c75692dae127bcd7bc8a4b81badb",
-    "detail.overview": "ca0a7307f7f88044980272a4b8c26bb61593a3d70becfbc27e05e11e531e60f2",
-    "detail.features": "602f516f3668ca8235114ccd1244c79fed6561f55be4f80d46a2fbd192f81bd2",
-    "detail.requirements": "9ecd433e64301250bb2b90e279a45af033bf6e3ae096eca50f4cd7c969c0173f",
-    "detail.usage": "0b46d00b587bac3b33a6a8d2c9d9f244ac5797f2c8799e4baed58cb11193db59",
+    "description": "8673623e9e39a65ffab9b1fc08e39763543ec261d7984b88d482b903d789e502",
+    "detail.overview": "9b641f962627047ed7cc0177f526207069602b8d00d1bc53e6734a6ebdc4ec14",
+    "detail.features": "e25d13366494a15db08503e26571406b00afb2a5788335bbcc311c8a87ac0e4c",
+    "detail.requirements": "c6dc6824844eaf4a396c3fe5ca613aee3ec9442369cd11b297eae8e7923a77e8",
+    "detail.usage": "9f18ce74020b34b67bbf6dd2f8865168544858b44fb830e8b00a09681c5a254a",
+    "detail.pmtiles": "3c59b59f7f1ac36bfaaf63c33968b028c54cd67dfb07d07e319faad0a0e66c0d",
     "detail.project": "05e6e72b091bc1174efbf323eaec9d3459c5140c748f77d3e8f80c5c053cc484",
     "tagLabels.railway": "d2a32cc04e3504723a1c331eacd2fa044ced02f6248db1135fd7e3e376427bb2",
     "tagLabels.maps": "401cafbae2d04b3ca791a9c495d2987754bf12a292a09ef239681cc0acf54ef2",

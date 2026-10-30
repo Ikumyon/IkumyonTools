@@ -1,6 +1,6 @@
 {
   "name": "NRClipBuilder",
-  "description": "N05・SHP・GeoJSONやOSMの鉄道データを地図で確認し、属性・路線種別・範囲で絞り込むGISツール。NIMBY Rails用のnrclip、GeoJSON、Turnout向けJSONを書き出せます。",
+  "description": "N05・SHP・GeoJSONやOSMの鉄道データを地図で確認し、属性・路線種別・範囲で絞り込むGISツール。NIMBY Rails用のnrclip、背景地図用PMTiles、GeoJSON、Turnout向けJSONを書き出せます。",
   "tagLabels": {
     "railway": "鉄道",
     "maps": "地図",

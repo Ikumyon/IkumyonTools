@@ -90,7 +90,8 @@
   "icon": "icon.ico",
   "detail": "detail.md",
   "downloads": {
-    "windows": "NRClipBuilder.zip"
+    "windows": "NRClipBuilder-windows-x64.zip",
+    "linux": "NRClipBuilder-linux-x64.tar.gz"
   },
   "tags": [
     "railway",

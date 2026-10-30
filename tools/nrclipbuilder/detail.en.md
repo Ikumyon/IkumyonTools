@@ -1,7 +1,7 @@
 <!-- i18n:overview -->
 ## Overview
 
-**NRClipBuilder** is a desktop app for previewing, filtering, and exporting GIS data such as railway lines. It creates `.nrclip` files for NIMBY Rails and Overpass-style JSON for Turnout.
+**NRClipBuilder** is a desktop app for previewing, filtering, and exporting GIS data such as railway lines. It creates `.nrclip` files for NIMBY Rails, PMTiles background railway maps, and Overpass-style JSON for Turnout.
 
 <!-- i18n:features -->
 ## Features
@@ -12,15 +12,18 @@
 - Filter with keywords, excluded terms, attributes, OR/AND conditions, and categories such as rail, subway, tram, and monorail.
 - Preview data over GSI maps, aerial imagery, or OpenStreetMap.
 - Clip to a bounding box and save frequently used areas in history.
-- Export GeoJSON, JSON for Turnout, and NIMBY Rails `.nrclip` files.
+- Export GeoJSON, JSON for Turnout, NIMBY Rails `.nrclip` files, and PMTiles background maps.
 - Switch the interface language. The current source contains translation files for 85 languages and regions.
 
 <!-- i18n:requirements -->
 ## Requirements and launch
 
-On Windows, extract the entire ZIP folder and launch `nrclip_builder.exe`. Keep the `localisation` folder beside the executable.
+Supports Windows x64 and Linux x64 on Ubuntu 24.04 or later. The packaged app does not require a Python installation.
 
-To run from source, prepare a Python environment, run `install_requirements.bat`, and launch with `run.bat` or `python nrclip_builder.py`. You can also pass a data file path as a launch argument.
+- Windows: Extract the ZIP and launch `NRClipBuilder.exe` in the extracted folder.
+- Linux: Extract the tar.gz and run `./NRClipBuilder` from the extracted folder.
+
+Keep the entire extracted folder intact. See the [project README](https://github.com/Ikumyon/NRClipBuilder/blob/main/README.md) for instructions on running from source. You can also pass a data file path as a launch argument.
 
 <!-- i18n:usage -->
 ## Getting started
@@ -29,7 +32,16 @@ To run from source, prepare a Python environment, run `install_requirements.bat`
 2. Adjust layer order and visibility, then inspect the map and attribute table.
 3. Apply keyword, attribute, and railway category filters.
 4. Select a bounding box to clip the output if needed.
-5. Export as GeoJSON, JSON for Turnout, or `.nrclip`.
+5. Open **File → Export…** and choose the NRC1 (`.nrclip`), PMTiles, GeoJSON, or Turnout JSON tab to export.
+
+<!-- i18n:pmtiles -->
+## PMTiles in NIMBY Rails
+
+PMTiles displays a background railway map. Use NRC1 (`.nrclip`) to export tracks for construction and operation.
+
+In NIMBY Rails 1.19 or later, open **Map options → Sources → New source**, add the exported local `.pmtiles` file, and use a style that displays OpenMapTiles railways. Colors and line styles follow the game style; the app does not generate a dedicated style mod.
+
+PMTiles is generated without external tools. Export zoom defaults to 0–14 and accepts values from 0–22.
 
 <!-- i18n:project -->
 ## Related project and license
